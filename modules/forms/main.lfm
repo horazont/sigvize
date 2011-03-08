@@ -1,0 +1,8 @@
+object MainForm: TMainForm
+  Left = 1524
+  Height = 526
+  Top = 148
+  Width = 724
+  Caption = 'sigvize'
+  LCLVersion = '0.9.31'
+end
