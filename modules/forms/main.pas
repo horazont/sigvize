@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ActnList,
-  ComCtrls;
+  ComCtrls, OpenGLContext;
 
 type
 
@@ -16,6 +16,7 @@ type
     HelpAbout: TAction;
     Actions: TActionList;
     Images: TImageList;
+    OpenGLControl1: TOpenGLControl;
     ToolBar: TToolBar;
     ToolButton1: TToolButton;
     procedure HelpAboutExecute(Sender: TObject);

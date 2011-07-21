@@ -1,17 +1,17 @@
 object MainForm: TMainForm
-  Left = 1521
-  Height = 526
-  Top = 139
-  Width = 724
+  Left = 1457
+  Height = 812
+  Top = 101
+  Width = 1060
   Caption = 'sigvize'
-  ClientHeight = 526
-  ClientWidth = 724
+  ClientHeight = 812
+  ClientWidth = 1060
   LCLVersion = '0.9.31'
   object ToolBar: TToolBar
     Left = 0
     Height = 26
     Top = 0
-    Width = 724
+    Width = 1060
     Caption = 'ToolBar'
     Images = Images
     TabOrder = 0
@@ -21,9 +21,16 @@ object MainForm: TMainForm
       Action = HelpAbout
     end
   end
+  object OpenGLControl1: TOpenGLControl
+    Left = 0
+    Height = 786
+    Top = 26
+    Width = 1060
+    Align = alClient
+  end
   object Images: TImageList
-    left = 232
-    top = 48
+    left = 640
+    top = 36
     Bitmap = {
       4C69010000001000000010000000FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -62,8 +69,8 @@ object MainForm: TMainForm
   end
   object Actions: TActionList
     Images = Images
-    left = 335
-    top = 119
+    left = 616
+    top = 92
     object HelpAbout: TAction
       Category = 'Help'
       Caption = 'About sigvize…'

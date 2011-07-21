@@ -29,14 +29,22 @@
         <LaunchingApplication PathPlusParams="/usr/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="2">
+    <RequiredPackages Count="4">
       <Item1>
-        <PackageName Value="LCLBase"/>
-        <MinVersion Major="1" Release="1" Valid="True"/>
+        <PackageName Value="LazOpenGLContext"/>
+        <MinVersion Release="1" Valid="True"/>
       </Item1>
       <Item2>
-        <PackageName Value="LCL"/>
+        <PackageName Value="LazControls"/>
+        <MinVersion Valid="True"/>
       </Item2>
+      <Item3>
+        <PackageName Value="LCLBase"/>
+        <MinVersion Major="1" Release="1" Valid="True"/>
+      </Item3>
+      <Item4>
+        <PackageName Value="LCL"/>
+      </Item4>
     </RequiredPackages>
     <Units Count="3">
       <Unit0>
@@ -55,7 +63,7 @@
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
-        <CursorPos X="115" Y="45"/>
+        <CursorPos X="1" Y="43"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -75,7 +83,7 @@
         <LoadedDesigner Value="True"/>
       </Unit2>
     </Units>
-    <JumpHistory Count="4" HistoryIndex="3">
+    <JumpHistory Count="7" HistoryIndex="6">
       <Position1>
         <Filename Value="modules/forms/main.pas"/>
         <Caret Line="1" Column="1" TopLine="1"/>
@@ -92,6 +100,18 @@
         <Filename Value="modules/forms/main.pas"/>
         <Caret Line="11" Column="69" TopLine="1"/>
       </Position4>
+      <Position5>
+        <Filename Value="modules/forms/main.pas"/>
+        <Caret Line="45" Column="115" TopLine="1"/>
+      </Position5>
+      <Position6>
+        <Filename Value="modules/forms/main.pas"/>
+        <Caret Line="46" Column="115" TopLine="1"/>
+      </Position6>
+      <Position7>
+        <Filename Value="modules/forms/main.pas"/>
+        <Caret Line="45" Column="115" TopLine="1"/>
+      </Position7>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
