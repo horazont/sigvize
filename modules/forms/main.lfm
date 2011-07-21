@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 1457
+  Left = 1467
   Height = 812
-  Top = 101
+  Top = 91
   Width = 1060
   Caption = 'sigvize'
   ClientHeight = 812
