@@ -8,7 +8,7 @@ uses
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, audorra, gametoolsetpkg, lazcontrols, lazopenglcontext, Main, AboutFrm,
-  AudorraInputProcessor
+  SiglyzeFilter
   { you can add units after this };
 
 {$R *.res}
