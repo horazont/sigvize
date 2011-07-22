@@ -68,6 +68,7 @@ type
     procedure DoSiglyzeSetupNodes;
     procedure RecieveFromSiglyze;
   public
+    property Input: TInputProcessor read FInput;
     property InputNode: TGTNode read FInputNode;
     property OnSiglyzeSetupConnections: TNotifyEvent read FOnSiglyzeSetupConnections write FOnSiglyzeSetupConnections;
     property OnSiglyzeSetupNodes: TNotifyEvent read FOnSiglyzeSetupNodes write FOnSiglyzeSetupNodes;
