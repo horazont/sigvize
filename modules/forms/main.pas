@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ActnList,
-  ComCtrls, OpenGLContext;
+  ComCtrls, OpenGLContext,
+  AuVorbis;
 
 type
 
