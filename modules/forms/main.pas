@@ -7,6 +7,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ActnList,
   ComCtrls, OpenGLContext,
+  AuALSA,
   AuVorbis, AuAudio, AuTypes, SiglyzeFilter, AuFiltergraph, AuDriverClasses,
   ProcessingOvermind, FFTProcessor, GTNodes, MixProcessor, DataTypeSamples;
 
@@ -21,6 +22,7 @@ type
     OpenGLControl1: TOpenGLControl;
     ToolBar: TToolBar;
     ToolButton1: TToolButton;
+    procedure FormCreate(Sender: TObject);
     procedure HelpAboutExecute(Sender: TObject);
   private
     FAuAudio: TAuAudio;
@@ -67,27 +69,34 @@ begin
   AboutForm.ShowModal;
 end;
 
+procedure TMainForm.FormCreate(Sender: TObject);
+begin
+  FInitialized := False;
+  FGLInitialized := False;
+  Init;
+end;
+
 procedure TMainForm.SiglyzeSetupConnections(Sender: TObject);
 var
   I: Integer;
 begin
-  if FAuSiglyze.InputNode.PortCount > 2 then
+{  if FAuSiglyze.InputNode.PortCount > 2 then
   begin
     for I := 0 to FAuSiglyze.InputNode.PortCount - 2 do
-      FSlMixerNode.InPort[I].Source := FAuSiglyze.InputNode.Port[I-1];
+      FSlMixerNode.InPort[I].Source := FAuSiglyze.InputNode.Port[I+1];
     FSlFFTNode.InPort[0].Source := FSlMixerNode.Port[0];
   end
   else
   begin
     FSlFFTNode.InPort[0].Source := FAuSiglyze.InputNode.Port[1];
-  end;
+  end;}
 end;
 
 procedure TMainForm.SiglyzeSetupNodes(Sender: TObject);
 begin
   FAuSiglyze.Input.SamplesPerBlock := 2048;
-  FSlMixer.InputChannelCount := FAuSiglyze.Input.SourceStream.ChannelCount;
-  FSlMixer.OutputChannelType := pcMixed;
+  {FSlMixer.InputChannelCount := FAuSiglyze.Input.SourceStream.ChannelCount;
+  FSlMixer.OutputChannelType := pcMixed;}
 end;
 
 procedure TMainForm.Burn;
@@ -136,16 +145,23 @@ var
 begin
   FAuAudio := TAuAudio.Create;
   FAuAudio.AutoChooseDriver;
+  if not FAuAudio.Initialize then
+    raise Exception.Create('Could not initialize audio subsystem.');
   FAuAudio.AutoChooseDevice;
   StreamDriver := FAuAudio.Driver.CreateStreamDriver(FAuAudio.StandardDeviceID);
 
   FAuOutput := TAuDriverOutput.Create(StreamDriver, 16);
   FAuSiglyze := TAuSiglyzeFilter.Create(FSlOvermind);
   FAuPlayer := TAuPlayer.Create(nil, FAuSiglyze);
-  FAuOutput.AddSource(FAuSiglyze);
+  FAuSiglyze.Target := FAuOutput;
 
   FAuSiglyze.OnSiglyzeSetupConnections := @SiglyzeSetupConnections;
   FAuSiglyze.OnSiglyzeSetupNodes := @SiglyzeSetupNodes;
+
+  FAuPlayer.LoadFromFile('/home/horazont/Music/Johnny Massacre/Johnny Massacre - Ultrasound.mp3');
+  if not FAuPlayer.Open then
+    raise Exception.Create('Open failed');
+  FAuPlayer.Play;
 end;
 
 procedure TMainForm.InitOpenGL;
@@ -156,10 +172,10 @@ end;
 procedure TMainForm.InitSiglyze;
 begin
   FSlOvermind := TProcessingOvermind.Create;
-  FSlFFTNode := FSlOvermind.NewNode(TFFTProcessor);
+  {FSlFFTNode := FSlOvermind.NewNode(TFFTProcessor);
   FSlFFT := FSlFFTNode.ProcessorThread as TFFTProcessor;
   FSlMixerNode := FSlOvermind.NewNode(TMixProcessor);
-  FSlMixer := FSlMixerNode.ProcessorThread as TMixProcessor;
+  FSlMixer := FSlMixerNode.ProcessorThread as TMixProcessor;}
 end;
 
 end.

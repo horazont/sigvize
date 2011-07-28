@@ -56,12 +56,17 @@
         <PackageName Value="LCL"/>
       </Item7>
     </RequiredPackages>
-    <Units Count="35">
+    <Units Count="40">
       <Unit0>
         <Filename Value="sigvize.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="sigvize"/>
-        <UsageCount Value="68"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="38" Y="24"/>
+        <UsageCount Value="114"/>
+        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="modules/forms/main.pas"/>
@@ -69,13 +74,13 @@
         <ComponentName Value="MainForm"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Main"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="114"/>
-        <CursorPos X="51" Y="145"/>
-        <UsageCount Value="68"/>
+        <TopLine Value="73"/>
+        <CursorPos X="122" Y="118"/>
+        <UsageCount Value="114"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="modules/forms/aboutfrm.pas"/>
@@ -83,11 +88,11 @@
         <ComponentName Value="AboutForm"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="AboutFrm"/>
-        <EditorIndex Value="18"/>
+        <EditorIndex Value="24"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="85" Y="13"/>
-        <UsageCount Value="68"/>
+        <UsageCount Value="114"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit2>
@@ -95,29 +100,31 @@
         <Filename Value="modules/audorra/siglyzefilter.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SiglyzeFilter"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="9"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="113"/>
-        <CursorPos X="49" Y="71"/>
-        <UsageCount Value="68"/>
+        <TopLine Value="172"/>
+        <CursorPos X="33" Y="204"/>
+        <UsageCount Value="114"/>
         <Loaded Value="True"/>
       </Unit3>
       <Unit4>
         <Filename Value="../../packages/audorra/src/AuFiltergraph.pas"/>
         <UnitName Value="AuFiltergraph"/>
+        <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="600"/>
-        <CursorPos X="3" Y="602"/>
-        <UsageCount Value="34"/>
+        <TopLine Value="163"/>
+        <CursorPos X="38" Y="189"/>
+        <UsageCount Value="56"/>
+        <Loaded Value="True"/>
       </Unit4>
       <Unit5>
         <Filename Value="../../packages/audorra/src/AuTypes.pas"/>
         <UnitName Value="AuTypes"/>
-        <EditorIndex Value="17"/>
+        <EditorIndex Value="23"/>
         <WindowIndex Value="0"/>
         <TopLine Value="124"/>
         <CursorPos X="3" Y="150"/>
-        <UsageCount Value="31"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
       </Unit5>
       <Unit6>
@@ -126,41 +133,44 @@
         <WindowIndex Value="0"/>
         <TopLine Value="98"/>
         <CursorPos X="3" Y="124"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="1"/>
       </Unit6>
       <Unit7>
         <Filename Value="../../packages/gametoolset/struct/gtringbuffer.pas"/>
         <UnitName Value="GTRingBuffer"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="25"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="193"/>
-        <CursorPos X="32" Y="238"/>
-        <UsageCount Value="34"/>
+        <TopLine Value="197"/>
+        <CursorPos X="78" Y="221"/>
+        <UsageCount Value="57"/>
+        <Loaded Value="True"/>
       </Unit7>
       <Unit8>
         <Filename Value="/usr/share/fpcsrc/rtl/inc/threadh.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="115"/>
         <CursorPos X="11" Y="154"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="5"/>
       </Unit8>
       <Unit9>
         <Filename Value="/usr/share/fpcsrc/packages/fcl-base/src/syncobjs.pp"/>
         <UnitName Value="syncobjs"/>
-        <EditorIndex Value="13"/>
+        <EditorIndex Value="19"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="128"/>
+        <TopLine Value="127"/>
         <CursorPos X="28" Y="143"/>
-        <UsageCount Value="34"/>
+        <UsageCount Value="58"/>
         <Loaded Value="True"/>
       </Unit9>
       <Unit10>
         <Filename Value="../../packages/gametoolset/struct/gtintmap.pas"/>
         <UnitName Value="GTIntMap"/>
-        <EditorIndex Value="12"/>
+        <EditorIndex Value="18"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="31"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
       </Unit10>
       <Unit11>
@@ -168,50 +178,50 @@
         <WindowIndex Value="0"/>
         <TopLine Value="397"/>
         <CursorPos X="11" Y="397"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="2"/>
       </Unit11>
       <Unit12>
         <Filename Value="/usr/share/fpcsrc/rtl/inc/heap.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="131"/>
         <CursorPos X="30" Y="257"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="2"/>
       </Unit12>
       <Unit13>
         <Filename Value="/usr/share/fpcsrc/rtl/inc/systemh.inc"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="541"/>
-        <CursorPos X="81" Y="563"/>
-        <UsageCount Value="6"/>
+        <TopLine Value="495"/>
+        <CursorPos X="74" Y="533"/>
+        <UsageCount Value="30"/>
       </Unit13>
       <Unit14>
         <Filename Value="../../packages/audorra/src/AuDriverClasses.pas"/>
         <UnitName Value="AuDriverClasses"/>
-        <EditorIndex Value="15"/>
+        <EditorIndex Value="21"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="17"/>
+        <TopLine Value="19"/>
         <CursorPos X="3" Y="71"/>
-        <UsageCount Value="31"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
       </Unit14>
       <Unit15>
         <Filename Value="../../packages/audorra/src/AuUtils.pas"/>
         <UnitName Value="AuUtils"/>
-        <EditorIndex Value="14"/>
+        <EditorIndex Value="20"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="43"/>
+        <TopLine Value="51"/>
         <CursorPos X="11" Y="103"/>
-        <UsageCount Value="31"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
       </Unit15>
       <Unit16>
         <Filename Value="../../packages/audorra/src/drivers/AuLibao.pas"/>
         <UnitName Value="AuLibao"/>
-        <EditorIndex Value="16"/>
+        <EditorIndex Value="22"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="57"/>
+        <TopLine Value="243"/>
         <CursorPos X="41" Y="295"/>
-        <UsageCount Value="31"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
       </Unit16>
       <Unit17>
@@ -220,56 +230,56 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="6" Y="12"/>
-        <UsageCount Value="30"/>
+        <UsageCount Value="26"/>
       </Unit17>
       <Unit18>
         <Filename Value="../../packages/audorra/src/AuAudio.pas"/>
         <UnitName Value="AuAudio"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="291"/>
-        <CursorPos X="33" Y="317"/>
-        <UsageCount Value="31"/>
+        <TopLine Value="1216"/>
+        <CursorPos X="30" Y="1249"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
       </Unit18>
       <Unit19>
         <Filename Value="../../packages/siglyze/sources/sources.pas"/>
         <UnitName Value="Sources"/>
-        <EditorIndex Value="10"/>
+        <EditorIndex Value="16"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="95" Y="46"/>
-        <UsageCount Value="31"/>
+        <TopLine Value="202"/>
+        <CursorPos X="71" Y="254"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
       </Unit19>
       <Unit20>
         <Filename Value="../../packages/audorra/src/drivers/AuALSA.pas"/>
         <UnitName Value="AuALSA"/>
-        <EditorIndex Value="11"/>
+        <EditorIndex Value="17"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="135"/>
-        <CursorPos X="36" Y="108"/>
-        <UsageCount Value="31"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="1"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
       </Unit20>
       <Unit21>
         <Filename Value="../../packages/siglyze/processors/outputprocessor.pas"/>
         <UnitName Value="OutputProcessor"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="13"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="88"/>
-        <CursorPos X="65" Y="107"/>
-        <UsageCount Value="31"/>
+        <TopLine Value="77"/>
+        <CursorPos X="73" Y="97"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
       </Unit21>
       <Unit22>
         <Filename Value="../../packages/siglyze/overmind/processingovermind.pas"/>
         <UnitName Value="ProcessingOvermind"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="12"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="31"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
       </Unit22>
       <Unit23>
@@ -278,16 +288,16 @@
         <WindowIndex Value="0"/>
         <TopLine Value="192"/>
         <CursorPos X="7" Y="230"/>
-        <UsageCount Value="28"/>
+        <UsageCount Value="24"/>
       </Unit23>
       <Unit24>
         <Filename Value="../../packages/siglyze/processors/inputprocessor.pas"/>
         <UnitName Value="InputProcessor"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="11"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="64"/>
-        <CursorPos X="50" Y="94"/>
-        <UsageCount Value="31"/>
+        <TopLine Value="65"/>
+        <CursorPos X="56" Y="95"/>
+        <UsageCount Value="55"/>
         <Loaded Value="True"/>
       </Unit24>
       <Unit25>
@@ -295,14 +305,14 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1485"/>
         <CursorPos X="37" Y="1513"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="8"/>
       </Unit25>
       <Unit26>
         <Filename Value="/usr/share/fpcsrc/rtl/unix/tthread.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="264"/>
         <CursorPos X="83" Y="295"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="8"/>
       </Unit26>
       <Unit27>
         <Filename Value="../../packages/gametoolset/node/gtnodecontroller.pas"/>
@@ -310,36 +320,36 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="6"/>
       </Unit27>
       <Unit28>
         <Filename Value="../../packages/gametoolset/node/gtmainthreadnode.pas"/>
         <UnitName Value="GTMainThreadNode"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="14"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="3"/>
+        <TopLine Value="2"/>
         <CursorPos X="66" Y="24"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="36"/>
         <Loaded Value="True"/>
       </Unit28>
       <Unit29>
         <Filename Value="../../packages/gametoolset/node/gtnodes.pas"/>
         <UnitName Value="GTNodes"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="15"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="916"/>
-        <CursorPos X="5" Y="937"/>
-        <UsageCount Value="12"/>
+        <TopLine Value="877"/>
+        <CursorPos X="8" Y="929"/>
+        <UsageCount Value="36"/>
         <Loaded Value="True"/>
       </Unit29>
       <Unit30>
         <Filename Value="../../packages/siglyze/processors/syncprocessor.pas"/>
         <UnitName Value="SyncProcessor"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="10"/>
         <WindowIndex Value="0"/>
         <TopLine Value="37"/>
-        <CursorPos X="72" Y="34"/>
-        <UsageCount Value="11"/>
+        <CursorPos X="66" Y="78"/>
+        <UsageCount Value="35"/>
         <Loaded Value="True"/>
       </Unit30>
       <Unit31>
@@ -348,7 +358,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="29"/>
         <CursorPos X="9" Y="44"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="6"/>
       </Unit31>
       <Unit32>
         <Filename Value="../../packages/audorra/lib/vorbis.pas"/>
@@ -356,7 +366,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="31"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="6"/>
       </Unit32>
       <Unit33>
         <Filename Value="../../packages/audorra/lib/ogg.pas"/>
@@ -364,128 +374,188 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="59" Y="32"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="6"/>
       </Unit33>
       <Unit34>
         <Filename Value="../../packages/siglyze/datatypes/datatypesamples.pas"/>
         <UnitName Value="DataTypeSamples"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="34"/>
         <Loaded Value="True"/>
       </Unit34>
+      <Unit35>
+        <Filename Value="../../packages/andorracommons/AcDataStore.pas"/>
+        <UnitName Value="AcDataStore"/>
+        <EditorIndex Value="4"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1349"/>
+        <CursorPos X="56" Y="1377"/>
+        <UsageCount Value="33"/>
+        <Loaded Value="True"/>
+      </Unit35>
+      <Unit36>
+        <Filename Value="../../packages/andorracommons/AcPersistent.pas"/>
+        <UnitName Value="AcPersistent"/>
+        <EditorIndex Value="8"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="372"/>
+        <CursorPos X="1" Y="390"/>
+        <UsageCount Value="33"/>
+        <Loaded Value="True"/>
+      </Unit36>
+      <Unit37>
+        <Filename Value="../../packages/gametoolset/core/gtbase.pas"/>
+        <UnitName Value="GTBase"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="725"/>
+        <CursorPos X="36" Y="752"/>
+        <UsageCount Value="33"/>
+        <Loaded Value="True"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="../../packages/siglyze/processors/mixprocessor.pas"/>
+        <UnitName Value="MixProcessor"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="73"/>
+        <CursorPos X="58" Y="91"/>
+        <UsageCount Value="33"/>
+        <Loaded Value="True"/>
+      </Unit38>
+      <Unit39>
+        <Filename Value="../../packages/gametoolset/file/gtstreamutils.pas"/>
+        <UnitName Value="GTStreamUtils"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="16" Y="42"/>
+        <UsageCount Value="9"/>
+      </Unit39>
     </Units>
-    <JumpHistory Count="27" HistoryIndex="26">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="modules/audorra/siglyzefilter.pas"/>
-        <Caret Line="176" Column="72" TopLine="142"/>
+        <Filename Value="../../packages/gametoolset/struct/gtringbuffer.pas"/>
+        <Caret Line="155" Column="1" TopLine="113"/>
       </Position1>
       <Position2>
-        <Filename Value="modules/audorra/siglyzefilter.pas"/>
-        <Caret Line="179" Column="26" TopLine="150"/>
+        <Filename Value="../../packages/gametoolset/struct/gtringbuffer.pas"/>
+        <Caret Line="156" Column="1" TopLine="113"/>
       </Position2>
       <Position3>
-        <Filename Value="modules/audorra/siglyzefilter.pas"/>
-        <Caret Line="106" Column="41" TopLine="81"/>
+        <Filename Value="../../packages/gametoolset/struct/gtringbuffer.pas"/>
+        <Caret Line="157" Column="1" TopLine="113"/>
       </Position3>
       <Position4>
-        <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="25" Column="16" TopLine="1"/>
+        <Filename Value="../../packages/gametoolset/struct/gtringbuffer.pas"/>
+        <Caret Line="158" Column="1" TopLine="113"/>
       </Position4>
       <Position5>
-        <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="29" Column="27" TopLine="1"/>
+        <Filename Value="../../packages/gametoolset/struct/gtringbuffer.pas"/>
+        <Caret Line="159" Column="1" TopLine="114"/>
       </Position5>
       <Position6>
-        <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="56" Column="20" TopLine="8"/>
+        <Filename Value="../../packages/gametoolset/struct/gtringbuffer.pas"/>
+        <Caret Line="160" Column="1" TopLine="115"/>
       </Position6>
       <Position7>
-        <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="65" Column="17" TopLine="15"/>
+        <Filename Value="../../packages/gametoolset/struct/gtringbuffer.pas"/>
+        <Caret Line="149" Column="1" TopLine="115"/>
       </Position7>
       <Position8>
-        <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="58" Column="17" TopLine="15"/>
+        <Filename Value="../../packages/gametoolset/struct/gtringbuffer.pas"/>
+        <Caret Line="163" Column="1" TopLine="118"/>
       </Position8>
       <Position9>
-        <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="10" Column="76" TopLine="1"/>
+        <Filename Value="modules/audorra/siglyzefilter.pas"/>
+        <Caret Line="122" Column="1" TopLine="95"/>
       </Position9>
       <Position10>
-        <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="58" Column="18" TopLine="17"/>
+        <Filename Value="modules/audorra/siglyzefilter.pas"/>
+        <Caret Line="116" Column="1" TopLine="95"/>
       </Position10>
       <Position11>
-        <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="30" Column="29" TopLine="5"/>
+        <Filename Value="modules/audorra/siglyzefilter.pas"/>
+        <Caret Line="118" Column="45" TopLine="95"/>
       </Position11>
       <Position12>
-        <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="35" Column="27" TopLine="8"/>
+        <Filename Value="modules/audorra/siglyzefilter.pas"/>
+        <Caret Line="239" Column="12" TopLine="214"/>
       </Position12>
       <Position13>
-        <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="42" Column="26" TopLine="10"/>
+        <Filename Value="modules/audorra/siglyzefilter.pas"/>
+        <Caret Line="10" Column="70" TopLine="1"/>
       </Position13>
       <Position14>
-        <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="32" Column="27" TopLine="1"/>
+        <Filename Value="modules/audorra/siglyzefilter.pas"/>
+        <Caret Line="51" Column="31" TopLine="29"/>
       </Position14>
       <Position15>
-        <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="33" Column="25" TopLine="21"/>
+        <Filename Value="modules/audorra/siglyzefilter.pas"/>
+        <Caret Line="239" Column="129" TopLine="214"/>
       </Position15>
       <Position16>
-        <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="136" Column="24" TopLine="87"/>
+        <Filename Value="modules/audorra/siglyzefilter.pas"/>
+        <Caret Line="65" Column="29" TopLine="39"/>
       </Position16>
       <Position17>
-        <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="33" Column="17" TopLine="7"/>
+        <Filename Value="../../packages/gametoolset/struct/gtringbuffer.pas"/>
+        <Caret Line="50" Column="39" TopLine="11"/>
       </Position17>
       <Position18>
-        <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="42" Column="34" TopLine="32"/>
+        <Filename Value="modules/audorra/siglyzefilter.pas"/>
+        <Caret Line="254" Column="79" TopLine="219"/>
       </Position18>
       <Position19>
-        <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="35" Column="27" TopLine="1"/>
+        <Filename Value="modules/audorra/siglyzefilter.pas"/>
+        <Caret Line="137" Column="28" TopLine="123"/>
       </Position19>
       <Position20>
-        <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="88" Column="20" TopLine="44"/>
+        <Filename Value="modules/audorra/siglyzefilter.pas"/>
+        <Caret Line="264" Column="69" TopLine="225"/>
       </Position20>
       <Position21>
-        <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="90" Column="35" TopLine="62"/>
+        <Filename Value="modules/audorra/siglyzefilter.pas"/>
+        <Caret Line="220" Column="12" TopLine="183"/>
       </Position21>
       <Position22>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="11" Column="11" TopLine="1"/>
+        <Caret Line="161" Column="86" TopLine="130"/>
       </Position22>
       <Position23>
-        <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="90" Column="45" TopLine="59"/>
+        <Filename Value="../../packages/gametoolset/struct/gtringbuffer.pas"/>
+        <Caret Line="220" Column="11" TopLine="203"/>
       </Position23>
       <Position24>
-        <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="140" Column="57" TopLine="114"/>
+        <Filename Value="../../packages/gametoolset/struct/gtringbuffer.pas"/>
+        <Caret Line="168" Column="10" TopLine="133"/>
       </Position24>
       <Position25>
-        <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="144" Column="27" TopLine="114"/>
+        <Filename Value="modules/audorra/siglyzefilter.pas"/>
+        <Caret Line="70" Column="33" TopLine="45"/>
       </Position25>
       <Position26>
-        <Filename Value="../../packages/audorra/src/AuAudio.pas"/>
-        <Caret Line="1052" Column="28" TopLine="1022"/>
+        <Filename Value="modules/audorra/siglyzefilter.pas"/>
+        <Caret Line="264" Column="52" TopLine="240"/>
       </Position26>
       <Position27>
-        <Filename Value="../../packages/audorra/src/AuAudio.pas"/>
-        <Caret Line="317" Column="33" TopLine="291"/>
+        <Filename Value="modules/audorra/siglyzefilter.pas"/>
+        <Caret Line="267" Column="12" TopLine="240"/>
       </Position27>
+      <Position28>
+        <Filename Value="../../packages/gametoolset/struct/gtringbuffer.pas"/>
+        <Caret Line="261" Column="9" TopLine="224"/>
+      </Position28>
+      <Position29>
+        <Filename Value="../../packages/audorra/src/AuFiltergraph.pas"/>
+        <Caret Line="1002" Column="12" TopLine="984"/>
+      </Position29>
+      <Position30>
+        <Filename Value="../../packages/gametoolset/struct/gtringbuffer.pas"/>
+        <Caret Line="174" Column="18" TopLine="130"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

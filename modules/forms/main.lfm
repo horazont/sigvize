@@ -6,6 +6,7 @@ object MainForm: TMainForm
   Caption = 'sigvize'
   ClientHeight = 812
   ClientWidth = 1060
+  OnCreate = FormCreate
   LCLVersion = '0.9.31'
   object ToolBar: TToolBar
     Left = 0
