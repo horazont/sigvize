@@ -5,7 +5,7 @@ unit GLShader;
 interface
 
 uses
-  Classes, SysUtils, dglOpenGL;
+  Classes, SysUtils, dglOpenGL, GTURI;
 
 type
 
@@ -13,6 +13,7 @@ type
 
   TGLShader = class (TObject)
   public
+    constructor CreateFromURL(const AVertexShaderURL, AFragmentShaderURL: String);
     constructor CreateFromFile(const AVertexShaderFileName, AFragmentShaderFileName: String);
     constructor CreateFromStream(const AVertexShaderStream, AFragmentShaderStream: TStream);
     constructor CreateFromSource(const AVertexShaderSource, AFragmentShaderSource: String);
@@ -29,6 +30,24 @@ type
 implementation
 
 { TglShader }
+
+constructor TGLShader.CreateFromURL(const AVertexShaderURL,
+  AFragmentShaderURL: String);
+var
+  VFS, FFS: TStream;
+begin
+  VFS := TGTURIStream.ActualStream(AVertexShaderURL, omRead);
+  try
+    FFS := TGTURIStream.ActualStream(AFragmentShaderURL, omRead);
+    try
+      CreateFromStream(VFS, FFS);
+    finally
+      FFS.Free;
+    end;
+  finally
+    VFS.Free;
+  end;
+end;
 
 constructor TglShader.CreateFromFile(const AVertexShaderFileName,
   AFragmentShaderFileName: String);

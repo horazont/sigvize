@@ -8,8 +8,9 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, audorra, gametoolsetpkg, lazcontrols, lazopenglcontext, Main, AboutFrm,
-  SiglyzeFilter
+  Forms, audorra, gametoolsetpkg, dglsdk, lazcontrols, lazopenglcontext, Main,
+  AboutFrm, SiglyzeFilter, glbase, glframebuffer, glshader, glviewportobj,
+  ioconfig
   { you can add units after this };
 
 {$R *.res}

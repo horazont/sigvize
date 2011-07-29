@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, AuFiltergraph, AuDriverClasses, Sources, GTRingBuffer,
-  AuTypes, Math, InputProcessor, OutputProcessor, GTNodes, DataTypeStatus,
-  ProcessingOvermind, syncobjs, GTStreamUtils, SyncProcessor, GTDebug;
+  AuTypes, Math, InputProcessor, GTNodes, DataTypeStatus,
+  ProcessingOvermind, syncobjs, GTStreamUtils, POTSyncProcessor, GTDebug;
 
 type
   // Read data from source and pass it through a GTRingBuffer to the siglyze
@@ -48,22 +48,25 @@ type
     FOnSiglyzeSetupNodes: TNotifyEvent;
     FSource: TAuFilter;
     FToStream: TStream;
-    FFromStream: TGTRingBuffer;
+    FChannelStreams: array of TGTSubchanneledRingbuffer;
     FSourceStream: TslSourceStream;
 
     FInterleavedBuffer: Pointer;
-    FSiglyzeBuffer: Pointer;
+    FInterleavedBufferSize: SizeUInt;
+    FChannelBuffer: Pointer;
+    FChannelBufferSize: SizeUInt;
 
     FInput: TInputProcessor;
     FInputNode: TGTNode;
-    FOutput: TOutputProcessor;
-    FOutputNode: TGTNode;
-    FSync: TSyncProcessor;
+    FSync: TPOTSyncProcessor;
     FSyncNode: TGTNode;
     FOvermind: TProcessingOvermind;
 
+    FMaxBlockSize: SizeUInt;
+
     FInternalBuffer: TGTRingBuffer;
   protected
+    function DetectAvailableByteCount: SizeUInt;
     function DoAddSource(AFilter: TAuFilter): Boolean; override;
     function DoCheckFilter: Boolean; override;
     procedure DoFinalize; override;
@@ -73,13 +76,16 @@ type
        override;
     procedure DoSiglyzeSetupConnections;
     procedure DoSiglyzeSetupNodes;
+    procedure EnforceBuffers(const ASampleCount: SizeUInt; const Persistent: Boolean = False);
+    procedure EnforceChannelBuffer(const ASize: SizeUInt; const Persistent: Boolean = False);
+    procedure EnforceInterleavedBuffer(const ASize: SizeUInt; const Persistent: Boolean = False);
     procedure RecieveFromSiglyze;
   public
     property Input: TInputProcessor read FInput;
     property InputNode: TGTNode read FInputNode;
     property OnSiglyzeSetupConnections: TNotifyEvent read FOnSiglyzeSetupConnections write FOnSiglyzeSetupConnections;
     property OnSiglyzeSetupNodes: TNotifyEvent read FOnSiglyzeSetupNodes write FOnSiglyzeSetupNodes;
-    property Sync: TSyncProcessor read FSync;
+    property Sync: TPOTSyncProcessor read FSync;
     property SyncNode: TGTNode read FSyncNode;
   end;
 
@@ -130,24 +136,35 @@ begin
   FOvermind := AOvermind;
   FInputNode := AOvermind.NewNode(TInputProcessor);
   FInput := FInputNode.ProcessorThread as TInputProcessor;
-  FOutputNode := AOvermind.NewNode(TOutputProcessor);
-  FOutput := FOutputNode.ProcessorThread as TOutputProcessor;
-  FSyncNode := AOvermind.NewNode(TSyncProcessor);
-  FSync := FSyncNode.ProcessorThread as TSyncProcessor;
-  FFromStream := TGTRingBuffer.Create(1048576); // 1MB of buffer, to avoid too many syncs
-  FFromStream.Debug := True;
-  FOutput.OutStream := FFromStream;
+  FSyncNode := AOvermind.NewNode(TPOTSyncProcessor);
+  FSync := FSyncNode.ProcessorThread as TPOTSyncProcessor;
   FInterleavedBuffer := nil;
+  FInterleavedBufferSize := 0;
+  FChannelBuffer := nil;
+  FChannelBufferSize := 0;
   Set8087CW($133F);
 end;
 
 destructor TAuSiglyzeFilter.Destroy;
 begin
   FreeAndNil(FInternalBuffer);
+  FreeAndNil(FChannelBuffer);
   FInputNode.Free;
-  FOutputNode.Free;
-  FFromStream.Free;
   inherited Destroy;
+end;
+
+function TAuSiglyzeFilter.DetectAvailableByteCount: SizeUInt;
+var
+  I: Integer;
+  CurrAvailable: SizeUInt;
+begin
+  Result := $FFFFFFFFFFFFFFF;
+  for I := 0 to High(FChannelStreams) do
+  begin
+    CurrAvailable := FChannelStreams[I].Available;
+    if CurrAvailable < Result then
+      Result := CurrAvailable;
+  end;
 end;
 
 function TAuSiglyzeFilter.DoAddSource(AFilter: TAuFilter): Boolean;
@@ -161,10 +178,13 @@ begin
 end;
 
 procedure TAuSiglyzeFilter.DoFinalize;
+var
+  I: Integer;
 begin
+  for I := 0 to High(FChannelStreams) do
+    FChannelStreams[I].Free;
   FreeAndNil(FSourceStream);
   FreeAndNil(FToStream);
-  FreeAndNil(FFromStream);
   inherited DoFinalize;
   FOvermind.Unlock;
 end;
@@ -172,13 +192,12 @@ end;
 procedure TAuSiglyzeFilter.DoFlush;
 begin
   inherited DoFlush;
-  WriteLn('DoFlush');
 end;
 
 function TAuSiglyzeFilter.DoInit(const AParameters: TAuAudioParameters
   ): Boolean;
 var
-  I: Integer;
+  I, SI: Integer;
 begin
   FOvermind.ForceState(osUnlocked);
   inherited DoInit(AParameters);
@@ -188,19 +207,26 @@ begin
   FToStream := TAuFilterStream.Create(FSource as TAuSourceFilter);
   FSourceStream := TslSourceStream.Create(FToStream, AParameters.Frequency, AParameters.Channels, @TranscodeF32, SizeOf(Single), False, False);
 
+  SetLength(FChannelStreams, FSourceStream.ChannelCount);
+  for I := 0 to High(FChannelStreams) do
+    FChannelStreams[I] := TGTSubchanneledRingbuffer.Create(FSourceStream.SampleRate * SizeOf(Double));
+  FChannelStreams[0].Debug := False;
+
   FInput.SourceStream := FSourceStream;
-  FOutput.PCMChannelCount := AParameters.Channels;
-  FOutput.DataSet := [deStatus, dePCM];
-  FOutput.FFTCount := 0;
-  FSync.InPortCount := 1;
+  FInput.SamplesPerBlock := 2048;
+  FSync.InputFFTCount := 0;
+  FSync.InputSamplesCount := FSourceStream.ChannelCount;
   DoSiglyzeSetupNodes;
   FOvermind.Init;
-  FOutputNode.InPort[0].Source := FSyncNode.Port[0];
-  FSyncNode.InPort[0].Source := FInputNode.Port[0];
+  for I := 0 to FSourceStream.ChannelCount - 1 do
+  begin
+    SI := I + FSync.InputFFTCount;
+    FSyncNode.InPort[SI].Source := FInputNode.Port[I+1];
+    FSyncNode.Port[SI].OutPipe.Targets.Add(FChannelStreams[I]);
+  end;
   DoSiglyzeSetupConnections;
-  for I := 1 to AParameters.Channels do
-    FOutputNode.InPort[I].Source := FInputNode.Port[I];
-  FInternalBuffer := TGTRingBuffer.Create(FInput.SamplesPerBlock * FInput.SourceStream.ChannelCount * SizeOf(Double) * 2);
+  FMaxBlockSize := 2048 * SizeOf(Double);
+  FInternalBuffer := TGTRingBuffer.Create(FSourceStream.SampleRate * FSourceStream.ChannelCount * SizeOf(Single) * 2); // 2s of buffer
   FInternalBuffer.Debug := False;
   FOvermind.Lock;
   Result := True;
@@ -219,7 +245,7 @@ begin
       ReadThisTime := FInternalBuffer.Read(ABuf^, Min(FInternalBuffer.Available, ASize - Result));
       Pointer(ABuf) := Pointer(ABuf) + ReadThisTime;
       Result += ReadThisTime;
-      if FInternalBuffer.Available <= 1024 then
+      if FInternalBuffer.Available <= FMaxBlockSize then
         RecieveFromSiglyze;
     end;
     WriteLn('Fulfilled audorras wish for data');
@@ -246,48 +272,90 @@ begin
     FOnSiglyzeSetupNodes(Self);
 end;
 
+procedure TAuSiglyzeFilter.EnforceChannelBuffer(const ASize: SizeUInt;
+  const Persistent: Boolean);
+begin
+  if FChannelBufferSize > ASize then
+    Exit;
+  if Persistent then
+  begin
+    ReAllocMem(FChannelBuffer, FChannelBufferSize);
+  end
+  else
+  begin
+    FreeMem(FChannelBuffer);
+    FChannelBuffer := GetMem(ASize);
+  end;
+  FChannelBufferSize := ASize;
+end;
+
+procedure TAuSiglyzeFilter.EnforceBuffers(const ASampleCount: SizeUInt;
+  const Persistent: Boolean);
+var
+  InterleavedSize: SizeUInt;
+  ChannelSize: SizeUInt;
+begin
+  ChannelSize := ASampleCount * SizeOf(Double);
+  InterleavedSize := ChannelSize * FSourceStream.ChannelCount;
+  EnforceInterleavedBuffer(InterleavedSize, Persistent);
+  EnforceChannelBuffer(ChannelSize, Persistent);
+end;
+
+procedure TAuSiglyzeFilter.EnforceInterleavedBuffer(const ASize: SizeUInt;
+  const Persistent: Boolean);
+begin
+  if FInterleavedBufferSize > ASize then
+    Exit;
+  if Persistent then
+  begin
+    ReAllocMem(FInterleavedBuffer, FInterleavedBufferSize);
+  end
+  else
+  begin
+    FreeMem(FInterleavedBuffer);
+    FInterleavedBuffer := GetMem(ASize);
+  end;
+  FInterleavedBufferSize := ASize;
+end;
+
 procedure TAuSiglyzeFilter.RecieveFromSiglyze;
 var
-  Header: TSiglyzeFrameHeader;
   I, J: Integer;
-  Source: PDouble;
+  SampleCount, Count: SizeUInt;
   TargetPtr: PSingle;
-  CCount: Integer;
-  SCount: Cardinal;
-  FrameSize: SizeUInt;
+  Source: PDouble;
 begin
-  DebugMsg('Receive from siglyze (%d available in FFromStream (size=%d), (%d/%d) available/free in FInternalBuffer)', [FFromStream.Available, FFromStream.Size, FInternalBuffer.Available, FInternalBuffer.Size - FInternalBuffer.Available]);
-  FrameSize := SizeOf(Single) * FInput.SamplesPerBlock * FInput.SourceStream.ChannelCount;
-
-  DebugMsg('Receiving header', []);
-  CheckRead(FFromStream, Header, SizeOf(TSiglyzeFrameHeader));
-  CCount := Parameters.Channels;
-  ReAllocMem(FInterleavedBuffer, FrameSize);
-  for I := 0 to Header.PCMChannelCount - 1 do
+  Count := DetectAvailableByteCount;
+  if Count > FMaxBlockSize then
+    Count := FMaxBlockSize;
+  if Count = 0 then
   begin
-    DebugMsg('Receiving channel %d', [I]);
-    CheckRead(FFromStream, SCount, SizeOf(Cardinal));
-    DebugMsg('Channel %d: Received sample count (%d)', [I, SCount]);
-    ReAllocMem(FSiglyzeBuffer, SCount * SizeOf(Double));
-    DebugMsg('Channel %d: Got memory', [I]);
-    CheckRead(FFromStream, FSiglyzeBuffer^, SCount * SizeOf(Double));
-    DebugMsg('Channel %d: Received samples', [I]);
+    ThreadSwitch;
+    Exit;
+  end;
+  SampleCount := Count div SizeOf(Double);
+  Count := SampleCount * SizeOf(Double); // round to full samples
+  EnforceBuffers(SampleCount);
+  for I := 0 to High(FChannelStreams) do
+  begin
+    DebugMsg('Channel %d: Reading %d samples (%d bytes)', [I, SampleCount, Count], Self);
+    CheckRead(FChannelStreams[I], FChannelBuffer^, Count);
 
     TargetPtr := PSingle(FInterleavedBuffer);
-    Source := PDouble(FSiglyzeBuffer);
+    Source := PDouble(FChannelBuffer);
 
-    DebugMsg('Channel %d: Converting samples', [I]);
+    DebugMsg('Channel %d: Converting samples (%d bytes)', [I, SampleCount * SizeOf(Double)], Self);
     Inc(TargetPtr, I);
-    for J := 0 to SCount - 1 do
+    for J := 0 to SampleCount - 1 do
     begin
       TargetPtr^ := Source^;
       Inc(Source);
-      Inc(TargetPtr, CCount);
+      Inc(TargetPtr, Length(FChannelStreams));
     end;
-    DebugMsg('Channel %d received', [I]);
+    DebugMsg('Channel %d received', [I], Self);
   end;
-  DebugMsg('Attempt to write %d bytes into internal buffer (%d free)', [FrameSize, FInternalBuffer.Size - FInternalBuffer.Available]);
-  FInternalBuffer.Write(FInterleavedBuffer^, FrameSize);
+  DebugMsg('Attempt to write %d bytes into internal buffer (%d free)', [Count * Length(FChannelStreams), FInternalBuffer.Size - FInternalBuffer.Available], Self);
+  FInternalBuffer.Write(FInterleavedBuffer^, SampleCount * SizeOf(Single) * Length(FChannelStreams));
 end;
 
 end.

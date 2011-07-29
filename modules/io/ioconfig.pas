@@ -5,13 +5,13 @@ unit ioConfig;
 interface
 
 uses
-  Classes, SysUtils, GTConfig, GTXDG, GTBase;
+  Classes, SysUtils, GTBase, GTVFSConfig, GTPaths, GTProtocolVFS, GTVFSXDG;
 
 type
 
   { TAuPaths }
 
-  TAuPaths = class (TGTXDGPaths)
+  TAuPaths = class (TGTPaths)
   public
     class function GetAppName: String; override;
   end;
@@ -95,7 +95,7 @@ type
 
   { TSigAnalyze }
 
-  TSigAnalyze = class (TGTConfig)
+  TSigAnalyze = class (TGTVFSConfig)
   public
     constructor Create; override;
     destructor Destroy; override;
@@ -222,18 +222,19 @@ end;
 
 function TSigAnalyze.DefaultNodeName: String;
 begin
-  Result := 'siganalyze';
+  Result := 'sigvize';
 end;
 
 { TAuPaths }
 
 class function TAuPaths.GetAppName: String;
 begin
-  Result := 'siganalyze';
+  Result := 'sigvize';
 end;
 
 initialization
-XDG := TAuPaths;
+Paths := TAuPaths;
+TGTProtocolVFS.VFS := TGTXDGVFS.Create;
 Config := TSigAnalyze.Create;
 Config.Load;
 

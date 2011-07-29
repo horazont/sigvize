@@ -6,6 +6,7 @@ object MainForm: TMainForm
   Caption = 'sigvize'
   ClientHeight = 812
   ClientWidth = 1060
+  OnActivate = FormActivate
   OnCreate = FormCreate
   LCLVersion = '0.9.31'
   object ToolBar: TToolBar
@@ -22,7 +23,7 @@ object MainForm: TMainForm
       Action = HelpAbout
     end
   end
-  object OpenGLControl1: TOpenGLControl
+  object GL: TOpenGLControl
     Left = 0
     Height = 786
     Top = 26
