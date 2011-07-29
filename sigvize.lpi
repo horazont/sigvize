@@ -78,8 +78,8 @@
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="52"/>
-        <CursorPos X="37" Y="78"/>
+        <TopLine Value="738"/>
+        <CursorPos X="8" Y="790"/>
         <UsageCount Value="129"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -136,7 +136,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="273"/>
         <CursorPos X="86" Y="264"/>
-        <UsageCount Value="63"/>
+        <UsageCount Value="62"/>
       </Unit7>
       <Unit8>
         <Filename Value="/usr/share/fpcsrc/rtl/inc/threadh.inc"/>
@@ -197,8 +197,8 @@
         <UnitName Value="Main"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="72"/>
-        <CursorPos X="37" Y="110"/>
+        <TopLine Value="255"/>
+        <CursorPos X="27" Y="299"/>
         <UsageCount Value="25"/>
         <Loaded Value="True"/>
       </Unit15>
@@ -409,7 +409,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="29" Y="18"/>
-        <UsageCount Value="13"/>
+        <UsageCount Value="12"/>
       </Unit41>
       <Unit42>
         <Filename Value="../../packages/siglyze/datatypes/datatypestatus.pas"/>
@@ -486,13 +486,13 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="53" Y="30"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="22"/>
       </Unit50>
       <Unit51>
         <Filename Value="modules/gl/oop/glframebuffer.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="glframebuffer"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="22"/>
       </Unit51>
       <Unit52>
         <Filename Value="modules/gl/oop/glshader.pas"/>
@@ -501,13 +501,13 @@
         <WindowIndex Value="0"/>
         <TopLine Value="64"/>
         <CursorPos X="66" Y="83"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="22"/>
       </Unit52>
       <Unit53>
         <Filename Value="modules/gl/glviewportobj.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="glviewportobj"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="22"/>
       </Unit53>
       <Unit54>
         <Filename Value="modules/io/ioconfig.pas"/>
@@ -516,14 +516,14 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="75" Y="8"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="22"/>
       </Unit54>
       <Unit55>
         <Filename Value="../../../lcl/siganalyze/modules/libpeak/libpeak.pas"/>
         <UnitName Value="libPeak"/>
         <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
+        <TopLine Value="127"/>
         <CursorPos X="61" Y="29"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
@@ -553,119 +553,127 @@
         <UsageCount Value="10"/>
       </Unit58>
     </Units>
-    <JumpHistory Count="28" HistoryIndex="27">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="29" Column="50" TopLine="3"/>
+        <Caret Line="263" Column="40" TopLine="249"/>
       </Position1>
       <Position2>
-        <Filename Value="../../../lcl/siganalyze/main.pas"/>
-        <Caret Line="31" Column="48" TopLine="5"/>
+        <Filename Value="modules/forms/main.pas"/>
+        <Caret Line="315" Column="66" TopLine="277"/>
       </Position2>
       <Position3>
-        <Filename Value="../../../lcl/siganalyze/main.pas"/>
-        <Caret Line="10" Column="34" TopLine="1"/>
+        <Filename Value="modules/forms/main.pas"/>
+        <Caret Line="82" Column="27" TopLine="50"/>
       </Position3>
       <Position4>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="29" Column="51" TopLine="3"/>
+        <Caret Line="248" Column="75" TopLine="225"/>
       </Position4>
       <Position5>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="136" Column="88" TopLine="99"/>
+        <Caret Line="13" Column="66" TopLine="1"/>
       </Position5>
       <Position6>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="30" Column="15" TopLine="30"/>
+        <Caret Line="75" Column="43" TopLine="43"/>
       </Position6>
       <Position7>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="136" Column="61" TopLine="110"/>
+        <Caret Line="323" Column="95" TopLine="282"/>
       </Position7>
       <Position8>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="13" Column="55" TopLine="1"/>
+        <Caret Line="218" Column="51" TopLine="203"/>
       </Position8>
       <Position9>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="80" Column="29" TopLine="59"/>
+        <Caret Line="274" Column="63" TopLine="261"/>
       </Position9>
       <Position10>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="263" Column="40" TopLine="249"/>
+        <Caret Line="297" Column="58" TopLine="265"/>
       </Position10>
       <Position11>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="315" Column="66" TopLine="277"/>
+        <Caret Line="263" Column="36" TopLine="243"/>
       </Position11>
       <Position12>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="82" Column="27" TopLine="50"/>
+        <Caret Line="262" Column="32" TopLine="238"/>
       </Position12>
       <Position13>
-        <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="248" Column="75" TopLine="225"/>
+        <Filename Value="../../../lcl/siganalyze/main.pas"/>
+        <Caret Line="1014" Column="21" TopLine="996"/>
       </Position13>
       <Position14>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="13" Column="66" TopLine="1"/>
+        <Caret Line="85" Column="35" TopLine="40"/>
       </Position14>
       <Position15>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="75" Column="43" TopLine="43"/>
+        <Caret Line="393" Column="24" TopLine="341"/>
       </Position15>
       <Position16>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="323" Column="95" TopLine="282"/>
+        <Caret Line="278" Column="17" TopLine="253"/>
       </Position16>
       <Position17>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="218" Column="51" TopLine="203"/>
+        <Caret Line="86" Column="32" TopLine="54"/>
       </Position17>
       <Position18>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="274" Column="63" TopLine="261"/>
+        <Caret Line="407" Column="43" TopLine="355"/>
       </Position18>
       <Position19>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="297" Column="58" TopLine="265"/>
+        <Caret Line="75" Column="37" TopLine="32"/>
       </Position19>
       <Position20>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="263" Column="36" TopLine="243"/>
+        <Caret Line="395" Column="75" TopLine="368"/>
       </Position20>
       <Position21>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="262" Column="32" TopLine="238"/>
+        <Caret Line="402" Column="75" TopLine="375"/>
       </Position21>
       <Position22>
-        <Filename Value="../../../lcl/siganalyze/main.pas"/>
-        <Caret Line="1014" Column="21" TopLine="996"/>
+        <Filename Value="modules/forms/main.pas"/>
+        <Caret Line="97" Column="22" TopLine="63"/>
       </Position22>
       <Position23>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="85" Column="35" TopLine="40"/>
+        <Caret Line="101" Column="33" TopLine="70"/>
       </Position23>
       <Position24>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="393" Column="24" TopLine="341"/>
+        <Caret Line="476" Column="13" TopLine="424"/>
       </Position24>
       <Position25>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="278" Column="17" TopLine="253"/>
+        <Caret Line="90" Column="49" TopLine="71"/>
       </Position25>
       <Position26>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="86" Column="32" TopLine="54"/>
+        <Caret Line="279" Column="27" TopLine="249"/>
       </Position26>
       <Position27>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="407" Column="43" TopLine="355"/>
+        <Caret Line="492" Column="8" TopLine="472"/>
       </Position27>
       <Position28>
         <Filename Value="modules/forms/main.pas"/>
-        <Caret Line="75" Column="37" TopLine="32"/>
+        <Caret Line="209" Column="67" TopLine="194"/>
       </Position28>
+      <Position29>
+        <Filename Value="modules/forms/main.pas"/>
+        <Caret Line="642" Column="15" TopLine="618"/>
+      </Position29>
+      <Position30>
+        <Filename Value="modules/forms/main.pas"/>
+        <Caret Line="738" Column="8" TopLine="688"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

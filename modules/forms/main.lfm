@@ -80,4 +80,10 @@ object MainForm: TMainForm
       OnExecute = HelpAboutExecute
     end
   end
+  object RenderTimer: TTimer
+    Interval = 25
+    OnTimer = RenderTimerTimer
+    left = 179
+    top = 144
+  end
 end

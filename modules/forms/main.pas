@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ActnList,
-  ComCtrls, OpenGLContext, GTURIAutoRegister,
+  ComCtrls, ExtCtrls, OpenGLContext, GTURIAutoRegister,
   AuALSA,
   AuVorbis, AuAudio, AuTypes, SiglyzeFilter, AuFiltergraph, AuDriverClasses,
   ProcessingOvermind, FFTProcessor, GTNodes, MixProcessor, DataTypeSamples,
@@ -38,11 +38,13 @@ type
     Actions: TActionList;
     Images: TImageList;
     GL: TOpenGLControl;
+    RenderTimer: TTimer;
     ToolBar: TToolBar;
     ToolButton1: TToolButton;
     procedure FormActivate(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure HelpAboutExecute(Sender: TObject);
+    procedure RenderTimerTimer(Sender: TObject);
   private
     FAuAudio: TAuAudio;
     FAuPlayer: TAuPlayer;
@@ -57,6 +59,8 @@ type
 
     FInitialized: Boolean;
     FGLInitialized: Boolean;
+
+    FMaxFrequency: Cardinal;
 
     PrepareShader, WaterfallWriteShader, CopyShader: TGLShader;
     WaterfallShader, SpectrumShader: array [Boolean] of TGLShader;
@@ -84,6 +88,8 @@ type
     procedure BurnAudorra;
     procedure BurnOpenGL;
     procedure BurnSiglyze;
+    procedure glBox(const X, Y, W, H: Integer);
+    procedure glClearBox;
     procedure Init;
     procedure InitAudorra;
     procedure InitGL;
@@ -91,6 +97,12 @@ type
     procedure InitGLShaders;
     procedure InitGLTextures;
     procedure InitSiglyze;
+    procedure PerFrameData;
+    procedure Render;
+    procedure RenderAvgSpectrum;
+    procedure RenderFrequencyMeter;
+    procedure RenderSpectrum;
+    procedure RenderWaterfall;
     procedure SetupActualViewport;
     procedure UpdateRenderArea;
   end; 
@@ -161,6 +173,12 @@ begin
   AboutForm.ShowModal;
 end;
 
+procedure TMainForm.RenderTimerTimer(Sender: TObject);
+begin
+  PerFrameData;
+  Render;
+end;
+
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
   FInitialized := False;
@@ -188,6 +206,7 @@ begin
     FSlFFTNode.InPort[0].Source := FAuSiglyze.InputNode.Port[1];
   end;
   FAuSiglyze.SyncNode.InPort[0].Source := FSlFFTNode.Port[0];
+  FMaxFrequency := FAuSiglyze.Input.SourceStream.SampleRate div 2;
 end;
 
 procedure TMainForm.SiglyzeSetupNodes(Sender: TObject);
@@ -228,6 +247,39 @@ end;
 procedure TMainForm.BurnSiglyze;
 begin
   FSlOvermind.Free;
+end;
+
+procedure TMainForm.glBox(const X, Y, W, H: Integer);
+begin
+  glTranslatef(X, Y, 0.0);
+  FGLBoxX := X;
+  FGLBoxY := Y;
+  FMouseGLX -= X;
+  FMouseGLY -= Y;
+  glColor3f(1, 1, 1);
+  glBegin(GL_QUADS);
+    glVertex2f(-1, -1);
+    glVertex2f(-1, H+1);
+    glVertex2f(W+1, H+1);
+    glVertex2f(W+1, -1);
+  glEnd;
+  glEnable(GL_SCISSOR_TEST);
+  glScissor(X, GL.Height - (Y + H), W, H);
+  glColor3f(0, 0, 0);
+  glBegin(GL_QUADS);
+    glVertex2f(0, 0);
+    glVertex2f(0, H);
+    glVertex2f(W, H);
+    glVertex2f(W, 0);
+  glEnd;
+end;
+
+procedure TMainForm.glClearBox;
+begin
+  FMouseGLX += FGLBoxX;
+  FMouseGLY += FGLBoxY;
+  glDisable(GL_SCISSOR_TEST);
+  glLoadIdentity;
 end;
 
 procedure TMainForm.Init;
@@ -390,6 +442,352 @@ begin
   FSlFFT := FSlFFTNode.ProcessorThread as TFFTProcessor;
   FSlMixerNode := FSlOvermind.NewNode(TMixProcessor);
   FSlMixer := FSlMixerNode.ProcessorThread as TMixProcessor;
+end;
+
+procedure TMainForm.PerFrameData;
+begin
+
+end;
+
+procedure TMainForm.Render;
+begin
+  glClear(GL_COLOR_BUFFER_BIT);
+
+  glBox(1, 1, 1058, 512);
+  RenderWaterfall;
+  glClearBox;
+
+  glBox(1, 516, 1024, 24);
+  RenderFrequencyMeter;
+  glClearBox;
+
+  glBox(1, 543, 1024, SpectrumHeight+17);
+  RenderSpectrum;
+  glClearBox;
+
+  if AvgSpectrumHeight > 0 then
+  begin
+    glBox(1, 543+SpectrumHeight+20, 1024, AvgSpectrumHeight);
+    RenderAvgSpectrum;
+    glClearBox;
+  end;
+
+  GL.SwapBuffers;
+  RaiseLastGLError;
+end;
+
+procedure TMainForm.RenderAvgSpectrum;
+var
+  Scale: Double;
+  CurrentShader: TGLShader;
+begin
+  {if Config.Spectrum.AutoScale then
+  begin
+    if Config.Spectrum.UsedBScale then
+      Scale := Analyzer.ClampDecibel(Analyzer.PeakDetector.Maximum)
+    else
+      Scale := DecibelToValue(Analyzer.PeakDetector.Maximum);
+    if Scale <> 0.0 then
+      Scale := 1/Scale
+    else
+      Scale := 1.0;
+  end
+  else}
+    Scale := Config.Spectrum.Scale;
+
+  CurrentShader := SpectrumShader[Config.Spectrum.UsedBScale];
+  CurrentShader.Bind;
+  glUniform1f(CurrentShader.GetUniformLocation('fftScale'), Scale);
+  PrepareBufferTexAvg.Bind;
+  glBegin(GL_QUADS);
+    glTexCoord2f(0, 1.0);
+    glVertex2f(0, 0);
+    glTexCoord2f(1, 1.0);
+    glVertex2f(1023, 0);
+    glTexCoord2f(1, 0);
+    glVertex2f(1023, AvgSpectrumHeight);
+    glTexCoord2f(0, 0);
+    glVertex2f(0, AvgSpectrumHeight);
+  glEnd;
+  PrepareBufferTexAvg.Unbind;
+  CurrentShader.Unbind;
+end;
+
+procedure TMainForm.RenderFrequencyMeter;
+var
+  I, Count: Integer;
+  X, Step: Single;
+  H: Single;
+  LargeTicks: Integer;
+  MedTicks: Integer;
+begin
+  if FMaxFrequency > 50000 then
+  begin
+    Count := FMaxFrequency div 1000;
+    Step := (1000 / FMaxFrequency) * 1024;
+    LargeTicks := 10;
+    MedTicks := 5;
+  end
+  else if FMaxFrequency > 10000 then
+  begin
+    Count := FMaxFrequency div 500;
+    Step := (500 / FMaxFrequency) * 1024;
+    LargeTicks := 20;
+    MedTicks := 10;
+  end
+  else if FMaxFrequency > 5000 then
+  begin
+    Count := FMaxFrequency div 100;
+    Step := (100 / FMaxFrequency) * 1024;
+    LargeTicks := 10;
+    MedTicks := 5;
+  end
+  else
+  begin
+    Count := FMaxFrequency div 50;
+    Step := (50 / FMaxFrequency) * 1024;
+    LargeTicks := 20;
+    MedTicks := 10;
+  end;
+
+  X := 0;
+  glColor4f(1.0, 1.0, 1.0, 1.0);
+  glBegin(GL_LINES);
+    for I := 0 to Count - 1 do
+    begin
+      if I mod LargeTicks = 0 then
+        H := 6.0
+      else if I mod MedTicks = 0 then
+        H := 5.0
+      else
+        H := 4.0;
+      glVertex2f(X, 0.0);
+      glVertex2f(X, H);
+
+      glVertex2f(X, 24.0-H);
+      glVertex2f(X, 24.0);
+      X += Step;
+    end;
+  glEnd;
+
+  glTranslatef(0, 16, 0);
+  glDisable(GL_TEXTURE_2D);
+  glBegin(GL_QUADS);
+    glColor4f(0.0, 1.0, 0.0, 1.0);
+    glVertex2f(0.0, -16.0);
+    glVertex2f(0.0, 0.0);
+    glVertex2f(100.0, 0.0);
+    glVertex2f(100.0, -16.0);
+  glEnd;
+  //glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glEnable(GL_TEXTURE_2D);
+  {tsTextColor4f(1.0, 1.0, 1.0, 1.0);
+  glColor4f(1.0, 1.0, 1.0, 1.0);
+  RaiseLastTSError;
+  tsFontBind(FTSFont);
+  RaiseLastTSError;
+  tsTextOutA('Hello World');
+  RaiseLastTSError;       }
+  glTranslatef(0, -16, 0);
+  glDisable(GL_BLEND);
+  glDisable(GL_TEXTURE_2D);
+end;
+
+procedure TMainForm.RenderSpectrum;
+const
+  Y = 8;
+var
+  AvgY, MaxY, PSY, ValidY, Scale: Double;
+//  PeakData: TExtendedFFTData;
+  I: Integer;
+  X, XStep: Double;
+  CurrentShader: TGLShader;
+  SpectrumBoxHeight: Integer;
+begin
+  SpectrumBoxHeight := SpectrumHeight+17;
+  {if Config.Spectrum.AutoScale then
+  begin
+    if Config.Spectrum.UsedBScale then
+      Scale := Analyzer.ClampDecibel(Analyzer.PeakDetector.Maximum)
+    else
+      Scale := DecibelToValue(Analyzer.PeakDetector.Maximum);
+    if Scale <> 0.0 then
+      Scale := 1/Scale
+    else
+      Scale := 1.0;
+  end
+  else
+    }Scale := Config.Spectrum.Scale;
+
+  CurrentShader := SpectrumShader[Config.Spectrum.UsedBScale];
+  CurrentShader.Bind;
+  {if Config.Spectrum.UsedBScale then
+  begin
+    AvgY := Analyzer.ClampDecibel(Analyzer.PeakDetector.Average);
+    MaxY := Analyzer.ClampDecibel(Analyzer.PeakDetector.Maximum);
+    PSY := Analyzer.ClampDecibel(Analyzer.PeakDetector.PeakThreshold);
+    ValidY := Analyzer.ClampDecibel(Analyzer.PeakDetector.ValidThreshold);
+  end
+  else
+  begin
+    AvgY := DecibelToValue(Analyzer.PeakDetector.Average);
+    MaxY := DecibelToValue(Analyzer.PeakDetector.Maximum);
+    PSY := DecibelToValue(Analyzer.PeakDetector.PeakThreshold);
+    ValidY := DecibelToValue(Analyzer.PeakDetector.ValidThreshold);
+  end;}
+  AvgY := 0;
+  MaxY := 0;
+  PSY := 0;
+  ValidY := 0;
+  glUniform1f(CurrentShader.GetUniformLocation('fftScale'), Scale);
+  PrepareBufferTex.Bind;
+  glBegin(GL_QUADS);
+    glTexCoord2f(0, 1.0);
+    glVertex2f(0, 17);
+    glTexCoord2f(1, 1.0);
+    glVertex2f(1023, 17);
+    glTexCoord2f(1, 0);
+    glVertex2f(1023, SpectrumBoxHeight);
+    glTexCoord2f(0, 0);
+    glVertex2f(0, SpectrumBoxHeight);
+  glEnd;
+  FFTInputTex.Unbind;
+  CurrentShader.Unbind;
+
+  AvgY := SpectrumBoxHeight - AvgY * Scale * SpectrumHeight;
+  MaxY := SpectrumBoxHeight - MaxY * Scale * SpectrumHeight;
+  PSY := SpectrumBoxHeight - PSY * Scale * SpectrumHeight;
+  ValidY := SpectrumBoxHeight - ValidY * Scale * SpectrumHeight;
+  glBegin(GL_LINES);
+    glColor4f(0.5, 1.0, 0.5, 1.0);
+    glVertex2f(0, AvgY);
+    glVertex2f(1024, AvgY);
+
+    glColor4f(1.0, 0.5, 0.5, 1.0);
+    glVertex2f(0, MaxY);
+    glVertex2f(1024, MaxY);
+
+    glColor4f(0.5, 0.5, 1.0, 1.0);
+    glVertex2f(0, PSY);
+    glVertex2f(1024, PSY);
+
+    glColor4f(1.0, 1.0, 0.5, 1.0);
+    glVertex2f(0, ValidY);
+    glVertex2f(1024, ValidY);
+  glEnd;
+
+  {glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glColor4f(0.75, 0.75, 0.75, 0.25);
+  glBegin(GL_QUADS);
+    glVertex2f(0, SpectrumBoxHeight);
+    glVertex2f(0, 17);
+    glVertex2f(Analyzer.DataMin / (Analyzer.InputSize-1) * 1024, 17);
+    glVertex2f(Analyzer.DataMin / (Analyzer.InputSize-1) * 1024, SpectrumBoxHeight);
+
+    glVertex2f(1024, SpectrumBoxHeight);
+    glVertex2f(1024, 17);
+    glVertex2f(Analyzer.DataMax / (Analyzer.InputSize-1) * 1024, 17);
+    glVertex2f(Analyzer.DataMax / (Analyzer.InputSize-1) * 1024, SpectrumBoxHeight);
+  glEnd;
+  glDisable(GL_BLEND);}
+
+  {PeakData := Analyzer.GetFullData;
+  if not Analyzer.PeakDetector.NoisedOut then
+  begin
+    X := 0;
+    XStep := 1024 / Length(PeakData);
+    glBegin(GL_QUADS);
+      for I := 0 to High(PeakData) do with PeakData[I].Peak do
+      begin
+        if IsPeak or IsPersistentPeak then
+        begin
+          if IsPeak then
+            glColor4f(1.0, 1.0, 1.0, 1.0)
+          else
+            glColor4f(1.0, 1.0, 0.0, 1.0);
+          glVertex2f(X-5.0, Y);
+          glVertex2f(X, Y+5.0);
+          glVertex2f(X+5.0, Y);
+          glVertex2f(X, Y-5.0);
+          if IsPersistentPeak then
+            glColor4f(0.0, 1.0, 0.0, 1.0)
+          else
+            glColor4f(0.0, 0.0, 0.0, 1.0);
+          glVertex2f(X-4.0, Y);
+          glVertex2f(X, Y+4.0);
+          glVertex2f(X+4.0, Y);
+          glVertex2f(X, Y-4.0);
+        end;
+        X += XStep;
+      end;
+    glEnd;
+  end
+  else
+  begin
+    glColor4f(0.5, 0.5, 0.5, 1.0);
+    glBegin(GL_TRIANGLE_STRIP);
+      glVertex2f(0.0, Y);
+      glVertex2f(4.0, Y-4.0);
+      glVertex2f(4.0, Y+4.0);
+      glVertex2f(1020, Y-4.0);
+      glVertex2f(1020, Y+4.0);
+      glVertex2f(1024, Y);
+    glEnd;
+  end;}
+end;
+
+procedure TMainForm.RenderWaterfall;
+var
+  CurrentShader: TGLShader;
+  ViewPosY1, ViewPosY2: Single;
+begin
+  CurrentShader := WaterfallShader[Config.Spectrum.UsedBScale];
+  CurrentShader.Bind;
+  glUniform1f(CurrentShader.GetUniformLocation('fftScale'), Config.Spectrum.Scale);
+  WaterfallBufferTex.Bind;
+  glBegin(GL_QUADS);
+    glTexCoord2f(0.0, 0.0);
+    glVertex2f(0.0, 0.0);
+    glTexCoord2f(0.0, 1.0);
+    glVertex2f(0.0, 512.0);
+    glTexCoord2f(1.0, 1.0);
+    glVertex2f(1024.0, 512.0);
+    glTexCoord2f(1.0, 0.0);
+    glVertex2f(1024.0, 0.0);
+  glEnd;
+  WaterfallBufferTex.Unbind;
+  CurrentShader.Unbind;
+
+  {glTranslatef(1050, 0, 0);
+  ViewPosY1 := 512-(FWaterfallBuffer.ReadPos/FWaterfallBuffer.Size)*512;
+  ViewPosY2 := ViewPosY1-(512/FWaterfallBuffer.Size)*512;
+  glBegin(GL_QUADS);
+    glColor4f(1, 1, 1, 1);
+    glVertex2f(0, -1);
+    glVertex2f(0, 513);
+    glVertex2f(10, 513);
+    glVertex2f(10, -1);
+
+    glColor4f(0, 0, 0, 1);
+    glVertex2f(1, 0);
+    glVertex2f(1, 512);
+    glVertex2f(9, 512);
+    glVertex2f(9, 0);
+
+    glColor4f(0.25, 0.25, 0.25, 1.0);
+    glVertex2f(1, ViewPosY2);
+    glVertex2f(1, ViewPosY1);
+    glVertex2f(9, ViewPosY1);
+    glVertex2f(9, ViewPosY2);
+  glEnd;
+  glTranslatef(-1050, 0, 0);
+
+  with WaterfallScrollBarBox do
+  begin
+    WaterfallScrollBarThumb := Rect(Left, Top + Round(ViewPosY2), Right, Bottom + Round(ViewPosY1));
+  end;}
 end;
 
 procedure TMainForm.SetupActualViewport;
